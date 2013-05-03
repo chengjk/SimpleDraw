@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="800" height="600" 
+	backgroundColor="0xffffff"
+	verticalGap="0"
+	creationComplete="init()" xmlns:components="components.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ColorPickerEvent;
+			import mx.events.ListEvent;
+			import flash.geom.Point;
+			private function init():void{
+			}
+			private function commod(cmd:String):void{
+				switch(cmd){
+					case 'clear' :{
+						this.board.clear();	
+					}break;
+					case 'undo' :{
+						this.board.unDo();	
+					}break;
+					case 'redo' :{
+						this.board.reDo();	
+					}break;
+					case 'out' :{
+						this.board.output();	
+					}break;
+				}
+			}
+		
+		    /**
+		    * 设置
+		    * */
+			private function setting():void{
+				board.drawRefline(bg.selectedItem.toString());
+				board.strokeColor=strcolor.selectedColor;
+				board.strokeSize=strSize.value;
+				board.strokeAlpha=strAlpha.value;
+			}
+		]]>
+	</mx:Script>
+	<mx:HBox width="100%" backgroundColor="#cdcdcd" verticalAlign="middle">
+		<mx:Button label="clear" click="commod('clear')"/>
+		<mx:Button label="undo" click="commod('undo')"/>
+		<mx:Button label="redo" click="commod('redo')"/>
+		<mx:Button label="out" click="commod('out')"/>
+		<mx:ComboBox id="bg" dataProvider="['point','line','grid']"   change="setting()"/>
+		<mx:ColorPicker id="strcolor" selectedColor="{board.strokeColor}" change="setting()" />
+		<mx:HSlider borderColor="red" id="strSize" value="{board.strokeSize}" change="setting()"
+			width="50" maximum="10" thumbOffset="6"/>
+		<mx:HSlider borderColor="blue" id="strAlpha" value="{board.strokeAlpha}" change="setting()"
+			width="50" maximum="1" minimum="0" thumbOffset="6"/>
+	</mx:HBox>
+	<components:Whiteboard id="board" width="100%" height="100%" />
+</mx:VBox>
